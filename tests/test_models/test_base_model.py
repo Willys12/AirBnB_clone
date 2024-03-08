@@ -32,3 +32,16 @@ class TestBaseModel(unittest.TestCase):
         obj_dict = self.base_model.to_dict()
         self.assertIsInstance(obj_dict, dict)
         self.assertEqual(obj_dict['__clas__'], 'BaseModel')
+        self.assertEqual(obj_dict['id'], self.base_model.id)
+        self.assertEqual(obj_dict['created_at'], self.base_model.created_at.isoformat())
+        self.assertEqual(obj_dict['updated_at'], self.base_model.updated_at.isoformat())
+        
+    def test_str_representation(self):
+        str_representation = str(self.base_model)
+        self.assertTrue(str_representation.startswitch('[BaseModel]'))
+        self.assertIn(self.base_model.id, str_representation)
+        self.assertIn(str(self.base_model.__dict__), str_representation)
+        
+        
+if __name__ == '__main__':
+    unittest.main()
