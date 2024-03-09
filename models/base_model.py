@@ -22,6 +22,8 @@ class BaseModel:
         self.updated_at = datetime.now()
         # Handle additional attributes passed as kwargs
         for k, v in kwargs.items():
+            if k == "__class__":
+                continue
             if k in ["created_at", "updated_at"]:
                 # Convert string to datetime object if necessary
                 if isinstance(v, str):
