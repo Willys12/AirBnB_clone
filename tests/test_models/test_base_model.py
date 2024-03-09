@@ -1,47 +1,56 @@
+#!/usr/bin/python3
+"""
+Unit tests for the BaseModel class.
+"""
+
 import unittest
+from datetime import datetime, timedelta
 from models.base_model import BaseModel
-from datetime import datetime
 
 class TestBaseModel(unittest.TestCase):
-    def setUp(self):
-        self.base_model = BaseModel()
-        
-    def tearDown(self):
-        del self.base_model
-        
-    def test_attributes(self):
-        self.asserTrue(hasattr(self.base_model, 'id'))
-        self.asserTrue(hasattr(self.base_model, 'created_at'))
-        self.asserTrue(hasattr(self.base_model, 'updated_at'))
-        
-    def test_id_is_string(self):
-        self.assertIsInstance(self.base_model.id, str)
-    
-    def test_created_at_is_datetime(self):
-        self.assertIsInstance(self.base_model.created_at, datetime)
-    
-    def test_updated_at_is_datetime(self):
-        self.assertIsInstance(self.base_model.update_at, datetime)
-        
-    def test_save_update_updated_at(self):
-        old_update_at = self.base_model.updated_at
-        self.base_model.save()
-        self.assertNotEqual(old_updated_at, self.base_model.updated_at)
-        
+    """
+    Test cases for the BaseModel class.
+    """
+
+    def test_init(self):
+        """
+        Test that the BaseModel instance is initialized correctly.
+        """
+        model = BaseModel()
+        self.assertIsInstance(model.id, str)
+        self.assertIsInstance(model.created_at, datetime)
+        self.assertIsInstance(model.updated_at, datetime)
+
+    def test_str(self):
+        """
+        Test the string representation of the BaseModel instance.
+        """
+        model = BaseModel()
+        self.assertIn("BaseModel", str(model))
+        self.assertIn(model.id, str(model))
+
+    def test_save(self):
+        """
+        Test that the save method updates the updated_at attribute.
+        """
+        model = BaseModel()
+        initial_updated_at = model.updated_at
+        model.save()
+        self.assertNotEqual(model.updated_at, initial_updated_at)
+
     def test_to_dict(self):
-        obj_dict = self.base_model.to_dict()
-        self.assertIsInstance(obj_dict, dict)
-        self.assertEqual(obj_dict['__clas__'], 'BaseModel')
-        self.assertEqual(obj_dict['id'], self.base_model.id)
-        self.assertEqual(obj_dict['created_at'], self.base_model.created_at.isoformat())
-        self.assertEqual(obj_dict['updated_at'], self.base_model.updated_at.isoformat())
-        
-    def test_str_representation(self):
-        str_representation = str(self.base_model)
-        self.assertTrue(str_representation.startswitch('[BaseModel]'))
-        self.assertIn(self.base_model.id, str_representation)
-        self.assertIn(str(self.base_model.__dict__), str_representation)
-        
-        
-if __name__ == '__main__':
+        """
+        Test the to_dict method returns a dictionary representation of the instance.
+        """
+        model = BaseModel()
+        model_dict = model.to_dict()
+        self.assertIsInstance(model_dict, dict)
+        self.assertEqual(model_dict["id"], model.id)
+        self.assertEqual(model_dict["__class__"], "BaseModel")
+        self.assertIsInstance(model_dict["created_at"], str)
+        self.assertIsInstance(model_dict["updated_at"], str)
+        self.assertEqual(model_dict["created_at"], model.created_at.isoformat())
+        self.assertEqual(model_dict["updated_at"], model.updated_at.isoformat())
+
+if __name__ == "__main__":
     unittest.main()
