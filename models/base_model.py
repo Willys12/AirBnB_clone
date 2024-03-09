@@ -6,9 +6,11 @@ BaseModel class that defines common attributes and methods for other classes.
 import uuid
 from datetime import datetime
 
+
 class BaseModel:
     """
-    BaseModel class that provides common attributes and methods for other classes.
+    BaseModel class that provides common attributes and
+    methods for other classes.
     """
 
     def __init__(self, *args, **kwargs):
