@@ -5,13 +5,12 @@ BaseModel class that defines common attributes and methods for other classes.
 
 import uuid
 from datetime import datetime
-from models import storage
 
 
 class BaseModel:
     """
-    BaseModel class that provides common attributes and
-    methods for other classes.
+    BaseModel class that provides common attributes
+    and methods for other classes.
     """
 
     def __init__(self, *args, **kwargs):
@@ -29,10 +28,7 @@ class BaseModel:
                 # Convert string to datetime object if necessary
                 if isinstance(v, str):
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
-                self.__dict__[k] = v
-
-        if not kwargs:
-            storage.new(self)
+            self.__dict__[k] = v
 
     def __str__(self):
         """
@@ -45,7 +41,6 @@ class BaseModel:
         Update the updated_at attribute to the current datetime.
         """
         self.updated_at = datetime.now()
-        storage.save()
 
     def to_dict(self):
         """
@@ -55,4 +50,4 @@ class BaseModel:
         model_dict["__class__"] = self.__class__.__name__
         model_dict["created_at"] = self.created_at.isoformat()
         model_dict["updated_at"] = self.updated_at.isoformat()
-        return model_dict)
+        return model_dict
