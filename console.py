@@ -3,6 +3,7 @@
 import cmd
 import json
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     models = {}
@@ -157,3 +158,4 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
