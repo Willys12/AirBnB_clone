@@ -30,6 +30,7 @@ class BaseModel:
                 if isinstance(v, str):
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
                 self.__dict__[k] = v
+
         if not kwargs:
             storage.new(self)
 
@@ -52,6 +53,19 @@ class BaseModel:
         """
         model_dict = self.__dict__.copy()
         model_dict["__class__"] = self.__class__.__name__
-        model_dict["created_at"] = self.created_at.isoformat()
-        model_dict["updated_at"] = self.updated_at.isoformat()
+        #model_dict["created_at"] = self.created_at.isoformat()
+        #model_dict["updated_at"] = self.updated_at.isoformat()
         return model_dict
+
+    @classmethod
+    def from_dict(cls, obj_dict):
+        # Convert datetime strings back to datetime objects
+        if "created_at" in obj_dict:
+            obj_dict["created_at"] = datetime.strptime(obj_dict["created_at"],
+                                                       "%Y-%m-%dT%H:%M:%S.%f")
+        if "updated_at" in obj_dict:
+            obj_dict["updated_at"] = datetime.strptime(obj_dict["updated_at"],
+                                                       "%Y-%m-%dT%H:%M:%S.%f")
+        # Remove the __class__ key and use it to instantiate the correct class
+        cls_name = obj_dict.pop("__class__")
+        return globals()[cls_name](**obj_dict)

@@ -6,9 +6,10 @@ Unit tests for the BaseModel class and FileStorage class.
 import unittest
 import os
 import json
-from datetime import datetime # Corrected import for datetime
+from datetime import datetime
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+
 
 class TestBaseModel(unittest.TestCase):
     """
@@ -26,12 +27,16 @@ class TestBaseModel(unittest.TestCase):
             "updated_at": "2023-04-01T12:34:56.789123",
             "__class__": "BaseModel"
         }
-        
+
         model = BaseModel(**model_dict)
-        
+
         self.assertEqual(model.id, model_dict['id'])
-        self.assertEqual(model.created_at, datetime.strptime(model_dict["created_at"], "%Y-%m-%dT%H:%M:%S.%f")) # Corrected usage
-        self.assertEqual(model.updated_at, datetime.strptime(model_dict["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")) # Corrected usage
+        self.assertEqual(model.created_at,
+                         datetime.strptime(model_dict["created_at"],
+                                           "%Y-%m-%dT%H:%M:%S.%f"))
+        self.assertEqual(model.updated_at,
+                         datetime.strptime(model_dict["updated_at"],
+                                           "%Y-%m-%dT%H:%M:%S.%f"))
 
     def test_init(self):
         """
@@ -61,7 +66,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict(self):
         """
-        Test the to_dict method returns a dictionary representation of the instance.
+        Test the to_dict method returns a dictionary representation
+        of the instance.
         """
         model = BaseModel()
         model_dict = model.to_dict()
@@ -70,8 +76,11 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(model_dict["__class__"], "BaseModel")
         self.assertIsInstance(model_dict["created_at"], str)
         self.assertIsInstance(model_dict["updated_at"], str)
-        self.assertEqual(model_dict["created_at"], model.created_at.isoformat())
-        self.assertEqual(model_dict["updated_at"], model.updated_at.isoformat())
+        self.assertEqual(model_dict["created_at"],
+                         model.created_at.isoformat())
+        self.assertEqual(model_dict["updated_at"],
+                         model.updated_at.isoformat())
+
 
 class TestFileStorage(unittest.TestCase):
     """
@@ -91,7 +100,8 @@ class TestFileStorage(unittest.TestCase):
         """
         model = BaseModel()
         self.storage.new(model)
-        self.assertIn(f"{model.__class__.__name__}.{model.id}", self.storage.all())
+        self.assertIn(f"{model.__class__.__name__}.{model.id}",
+                      self.storage.all())
 
     def test_save_and_reload(self):
         """
@@ -102,7 +112,8 @@ class TestFileStorage(unittest.TestCase):
         self.storage.save()
         self.storage.all().clear()
         self.storage.reload()
-        self.assertIn(f"{model.__class__.__name__}.{model.id}", self.storage.all())
+        self.assertIn(f"{model.__class__.__name__}.{model.id}",
+                      self.storage.all())
 
     def tearDown(self):
         """
@@ -110,6 +121,7 @@ class TestFileStorage(unittest.TestCase):
         """
         if os.path.exists(self.storage._FileStorage__file_path):
             os.remove(self.storage.__file_path)
+
 
 if __name__ == "__main__":
     unittest.main()
