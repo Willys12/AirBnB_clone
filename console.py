@@ -2,8 +2,6 @@
 # My command interpreter.
 import cmd
 
-print(dir(cmd.Cmd))
-
 
 class HBNBCommand(cmd.Cmd):
     """Interactive command interpreter for HBNB project"""
