@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 # My command interpreter.
 import cmd
-
-
-import cmd
 import json
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    models = {} # Placeholder for storing instances
+    models = {}
 
     def do_quit(self, arg):
         """
@@ -139,6 +136,24 @@ class HBNBCommand(cmd.Cmd):
         instance = self.models[class_name][instance_id]
         setattr(instance, attr_name, attr_value)
         print("Instance updated")
+
+    def process_commands(self, commands):
+        """Processes a list of commands in non-interactive mode."""
+        for command in commands:
+            if command.startswith('do_'):
+                command = command[3:]
+            self.onecmd(command)
+
+if __name__ == '__main__':
+    # Example usage in non-interactive mode
+    commands = [
+        'create BaseModel',
+        'show BaseModel 1234-1234-1234',
+        'destroy BaseModel 1234-1234-1234',
+        'all BaseModel',
+        'update BaseModel 1234-1234-1234 email "aibnb@mail.com"'
+    ]
+    HBNBCommand().process_commands(commands)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
