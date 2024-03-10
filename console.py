@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 # My command interpreter.
 import cmd
-
-
-import cmd
 import json
+
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    models = {} # Placeholder for storing instances
+    models = {}
 
     def do_quit(self, arg):
         """
@@ -142,3 +140,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
