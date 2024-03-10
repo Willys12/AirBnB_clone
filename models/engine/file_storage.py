@@ -10,7 +10,7 @@ import os
 
 class FileStorage:
     """
-    FileStorage class for serializing and deserializing 
+    FileStorage class for serializing and deserializing
     instances to/from a JSON file.
     """
 
@@ -48,5 +48,5 @@ class FileStorage:
                 for key, obj_dict in data.items():
                     cls_name, obj_id = key.split('.')
                     cls = globals()[cls_name]
-                    obj = cls(**obj_dict)
+                    obj = cls.form_dict(obj_dict)
                     self.new(obj)
