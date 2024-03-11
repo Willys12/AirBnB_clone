@@ -1,21 +1,12 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
-# from models import storage
+from . import storage
 
 
 class BaseModel:
     """Base model class for the common methods"""
 
-    def save(self):
-        """
-        updates the public instance attribute updated_at with
-        the current datetime
-        """
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
 
     def __init__(self, *args, **kwargs):
         """
@@ -53,6 +44,15 @@ class BaseModel:
             self.updated_at = datetime.strptime(kwargs['updated_at'],
                                                 "%Y-%m-%dT%H:%M:%S.%f")
 
+    def save(self):
+        """
+        updates the public instance attribute updated_at with
+        the current datetime
+        """
+        self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
+        
     def to_dict(self):
         """
         Returns a dictionary containing all keys/values.
