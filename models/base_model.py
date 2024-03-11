@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
-from . import storage
+#from . import storage
 
 
 class BaseModel:
@@ -48,6 +48,7 @@ class BaseModel:
         updates the public instance attribute updated_at with
         the current datetime
         """
+        from models import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
