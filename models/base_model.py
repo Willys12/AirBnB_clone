@@ -1,15 +1,17 @@
 #!/usr/bin/python3
 """
-BaseModel class that defines common attributes and methods for other classes.
+BaseModel class that defines common attributes and methods
+for other classes.
 """
 
 import uuid
 from datetime import datetime
-from models import storage
+
 
 class BaseModel:
     """
-    BaseModel class that provides common attributes and methods for other classes.
+    BaseModel class that provides common attributes and
+    methods for other classes.
     """
 
     def __init__(self, *args, **kwargs):
@@ -19,18 +21,11 @@ class BaseModel:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        # Handle additional attributes passed as kwargs
         for k, v in kwargs.items():
-            if k == "__class__":
-                continue
             if k in ["created_at", "updated_at"]:
-                # Convert string to datetime object if necessary
                 if isinstance(v, str):
                     v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
-            self.__dict__[k] = v
-        # Add the new instance to storage if it's not from a dictionary representation
-        if not kwargs:
-            storage.new(self)
+                self.__dict__[k] = v
 
     def __str__(self):
         """
@@ -40,10 +35,9 @@ class BaseModel:
 
     def save(self):
         """
-        Update the updated_at attribute to the current datetime and save the instance.
+        Update the updated_at attribute to the current datetime.
         """
         self.updated_at = datetime.now()
-        storage.save()
 
     def to_dict(self):
         """
