@@ -1,5 +1,5 @@
 # AirBnB clone - The console
-    *Description: - The objective of this project is to clone a website for Airbnb project.
+    * Description: - The objective of this project is to clone a website for Airbnb project.
 
 ## Objective of the project.
 - What is a command line interpreter?
