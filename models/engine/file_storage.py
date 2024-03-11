@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 FileStorage class for serializing and deserializing instances
 to/from a JSON file.

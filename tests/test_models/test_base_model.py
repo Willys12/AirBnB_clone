@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Tests for the BaseModel class.
 """
@@ -54,7 +54,11 @@ class TestBaseModel(unittest.TestCase):
         model = BaseModel()
         model.save()
         self.storage.reload()
-        reloaded_model = self.storage.all().get(f"{model.__class__.__name__}.{model.id}")
+        reloaded_model = (
+            self.storage.all().get(
+                f"{model.__class__.__name__}.{model.id}"
+                )
+            )
         self.assertIsNotNone(reloaded_model)
         self.assertEqual(model.id, reloaded_model.id)
         self.assertEqual(model.created_at, reloaded_model.created_at)
