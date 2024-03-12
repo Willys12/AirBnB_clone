@@ -14,14 +14,14 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb) '
 
-    def do_quit(self, arg):
+    def do_quit(self, line):
         """
         Quits the command interpreter.
         """
         print("Quitting the HBNB command interpreter.")
         return True
 
-    def do_EOF(self, arg):
+    def do_EOF(self, line):
         """
         Handles EOF (Ctrl-D) to exit the program.
         """
