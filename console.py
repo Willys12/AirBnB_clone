@@ -5,6 +5,7 @@ Entry point for the command interpreter.
 """
 
 import cmd
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,7 +13,7 @@ class HBNBCommand(cmd.Cmd):
     Command interpreter for HBNB.
     """
 
-    prompt = '(hbnb) '
+    prompt = "(hbnb) "
 
     def do_quit(self, line):
         """
@@ -35,10 +36,20 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def default(self, line):
-        """
-        Overrides the default behavior for unrecognized commands.
-        """
-        print(f"Unknown command: {line}")
+        """Default behavior for cmd module when input is invalid"""
+        # Regex pattern to match commands and their arguments
+        pattern = r"(\w+)\s*(?:\((.*?)\))?"
+        match = re.match(pattern, line)
+        if match:
+            command = match.group(1)
+            args = match.group(2)
+            if command in ['all', 'show', 'destroy', 'count', 'update']:
+                # Call the appropriate method based on the command
+                getattr(self, 'do_' + command)(args)
+            else:
+                print("*** Unknown syntax: {}".format(line))
+        else:
+            print("*** Unknown syntax: {}".format(line))
 
     def help_help(self):
         """
