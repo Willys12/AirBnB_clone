@@ -6,23 +6,18 @@ Entry point for the command interpreter.
 import cmd
 import json
 import os
-import uuid
-from datetime import datetime
+
 
 class BaseModel:
-    def __init__(self, **kwargs):
-        self.id = kwargs.get('id', str(uuid.uuid4()))
-        self.created_at = kwargs.get('created_at', datetime.now())
-        self.updated_at = kwargs.get('updated_at', datetime.now())
+    def __init__(self):
+        self.id = "1234-1234-1234"
 
     def save(self):
         """Save the instance to a JSON file."""
-        data = self.__dict__
+        data = {"id": self.id}
         with open("instances.json", "a") as file:
             file.write(json.dumps(data) + "\n")
 
-    def __str__(self):
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -32,7 +27,12 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
         "BaseModel",
-        # Add other classes here
+        "User",
+        "State",
+        "City",
+        "Place",
+        "Amenity",
+        "Review"
     }
 
     def do_quit(self, line):
@@ -62,20 +62,20 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Usage: create <class>
         Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id."""
-        args = line.split()
-        if len(args) == 0:
+        args = self.parse_args(line)
+        if not args:
             print("** class name missing **")
         elif args[0] not in self.__classes:
             print("** class doesn't exist **")
         else:
-            instance = BaseModel()
+            instance = BaseModel() # Simplified for demonstration
             instance.save()
             print(instance.id)
 
     def do_show(self, line):
         """Usage: show <class> <id>
         Prints the string representation of an instance based on the class name and id."""
-        args = line.split()
+        args = self.parse_args(line)
         if len(args) < 2:
             print("** class name or instance id missing **")
         else:
@@ -88,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """Usage: destroy <class> <id>
         Deletes an instance based on the class name and id."""
-        args = line.split()
+        args = self.parse_args(line)
         if len(args) < 2:
             print("** class name or instance id missing **")
         else:
@@ -100,7 +100,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Usage: all or all <class>
         Prints all string representation of all instances based or not on the class name."""
-        args = line.split()
+        args = self.parse_args(line)
         if len(args) > 1 and args[1] not in self.__classes:
             print("** class doesn't exist **")
         else:
@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Usage: update <class name> <id> <attribute name> "<attribute value>"
         Updates an instance based on the class name and id by adding or updating attribute."""
-        args = line.split()
+        args = self.parse_args(line)
         if len(args) < 4:
             print("** missing arguments **")
         else:
@@ -118,6 +118,30 @@ class HBNBCommand(cmd.Cmd):
                 print("Instance updated successfully.")
             else:
                 print("** no instance found **")
+
+    def parse_args(self, line):
+        """
+        Parses arguments from the input line, handling quoted strings.
+        """
+        args = []
+        current_arg = ""
+        in_quotes = False
+        for char in line:
+            if char == '"':
+                in_quotes = not in_quotes
+                if not in_quotes:
+                    args.append(current_arg)
+                    current_arg = ""
+                continue
+            if char == " " and not in_quotes:
+                if current_arg:
+                    args.append(current_arg)
+                    current_arg = ""
+                continue
+            current_arg += char
+        if current_arg:
+            args.append(current_arg)
+        return args
 
     def load_instance(self, class_name, instance_id):
         # Placeholder for loading an instance from the JSON file
@@ -134,6 +158,24 @@ class HBNBCommand(cmd.Cmd):
     def update_instance(self, class_name, instance_id, attribute_name, attribute_value):
         # Placeholder for updating an instance's attribute in the JSON file
         pass
+
+    def help_help(self):
+        """
+        Overrides the default help command to provide custom help text.
+        """
+        print("""
+        HBNB Command Interpreter
+        ------------------------
+        Available commands:
+        quit - Quits the command interpreter.
+        help - Displays this help message.
+        create - Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id.
+        show - Prints the string representation of an instance based on the class name and id.
+        destroy - Deletes an instance based on the class name and id.
+        all - Prints all string representation of all instances based or not on the class name.
+        update - Updates an instance based on the class name and id by adding or updating attribute.
+        """)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
