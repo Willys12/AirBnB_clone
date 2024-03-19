@@ -6,10 +6,10 @@ body {
     color: #484848;
 }
 
-.container {
+.containers {
     max-width: 1000px;
-    margin: auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    text-align: center;
+    margin: 30px auto 30px;
+    display: flex;
+    justify-content: center;
+    min-height: 100px;
 }
