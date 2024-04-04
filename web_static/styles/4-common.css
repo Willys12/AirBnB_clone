@@ -6,9 +6,8 @@ html, body {
     color: #484848;
 }
 
-div.containers {
+.container {
     max-width: 1000px;
     margin: 30px auto;
     text-align: center;
-    overflow: hidden;
 }

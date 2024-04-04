@@ -10,7 +10,7 @@ footer {
     bottom: 0;
   }
 
-  footer div {
+footer div {
     display: flex;
     color: black;
     justify-content: center;
